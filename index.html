@@ -284,7 +284,8 @@
     sendButton.addEventListener('click', () => {
         const feedback = feedbackInput.value;
         if (feedback) {
-            socket.send(feedback); // Send feedback to server
+            const message = JSON.stringify({ feedback }); // Send as valid JSON
+            socket.send(message); // Send JSON feedback to server
             feedbackInput.value = ''; // Clear input
         }
     });
@@ -310,6 +311,7 @@
         });
     }
 </script>
+
 
 </body>
 
