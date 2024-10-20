@@ -1,11 +1,11 @@
 {
-    "name": "websocket-app",
-    "version": "1.0.0",
-    "main": "websocket-server.js",
-    "scripts": {
-        "start": "node websocket-server.js"
-    },
-    "dependencies": {
-        "ws": "^8.2.3"
-    }
+  "name": "websocket-server",
+  "version": "1.0.0",
+  "main": "websocket-server.js",
+  "scripts": {
+    "start": "node websocket-server.js"
+  },
+  "dependencies": {
+    "ws": "^8.0.0"
+  }
 }
