@@ -274,49 +274,43 @@
             <p>Phone: +1 234 567 890</p>
         </div>
     </div>
-    <script>
-        // Wait for the DOM to fully load
-        document.addEventListener('DOMContentLoaded', () => {
-            const feedbackInput = document.getElementById('feedback');
-            const sendButton = document.getElementById('send');
-            const lastRateDiv = document.getElementById('last-rate');
+<script>
+    const feedbackInput = document.getElementById('feedback');
+    const lastRateDiv = document.getElementById('last-rate');
+    const sendButton = document.getElementById('send');
+    const socket = new WebSocket('wss://interesting-freezing-jaw.glitch.me'); // Updated WebSocket URL
 
-            // Replace with your actual server address
-            const socket = new WebSocket('ws://192.168.0.107:8080/'); // Use your local IP address
+    // Send feedback on button click
+    sendButton.addEventListener('click', () => {
+        const feedback = feedbackInput.value;
+        if (feedback) {
+            socket.send(feedback); // Send feedback to server
+            feedbackInput.value = ''; // Clear input
+        }
+    });
 
-            socket.onopen = () => {
-                console.log('WebSocket connection established');
-            };
+    // Handle WebSocket messages
+    socket.onmessage = (event) => {
+        const lastRate = event.data;
+        lastRateDiv.textContent = `Last rate: ${lastRate}`;
+    };
 
-            socket.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                lastRateDiv.innerHTML = `Last rate: ${data.feedback}`; // Update the last rate display without encoding
-            };
+    // Search technology functionality
+    function searchTech() {
+        const query = document.querySelector('.search-box').value.toLowerCase();
+        const techBoxes = document.querySelectorAll('.tech-box');
 
-            socket.onerror = (error) => {
-                console.error('WebSocket Error:', error);
-            };
-
-            socket.onclose = () => {
-                console.log('WebSocket connection closed');
-            };
-
-            sendButton.addEventListener('click', () => {
-                const feedbackText = feedbackInput.value.trim(); // Get the feedback text
-
-                if (feedbackText) {
-                    if (socket.readyState === WebSocket.OPEN) {
-                        socket.send(JSON.stringify({ feedback: feedbackText })); // Send feedback
-                        feedbackInput.value = ''; // Clear input after sending
-                    } else {
-                        console.error('WebSocket is not open. Current state:', socket.readyState);
-                    }
-                } else {
-                    alert('Please enter feedback before sending.'); // Alert if no feedback is entered
-                }
-            });
+        techBoxes.forEach(box => {
+            const title = box.querySelector('h3').textContent.toLowerCase();
+            if (title.includes(query)) {
+                box.style.display = '';
+            } else {
+                box.style.display = 'none';
+            }
         });
-    </script>
+    }
+</script>
+
 </body>
 
 </html>
