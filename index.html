@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Innovations Inc.</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #2C3E50, #4CA1AF);
+            color: #ffffff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #34495E;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+        .nav-bar:hover {
+            background-color: rgba(52, 73, 94, 0.9);
+        }
+
+        .nav-bar a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-bar a:hover {
+            color: #FF9800;
+        }
+
+        .search-box {
+            padding: 12px;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+            width: 300px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            margin-right: 100px;
+        }
+
+        .search-box:focus {
+            border-color: #FF9800;
+            outline: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 30px;
+            background-color: #cbcbcb;
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            animation: slideIn 0.8s ease-in-out;
+            transform: translateY(20px);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            color: #FF9800;
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #FF9800;
+            }
+
+            to {
+                text-shadow: 0 0 20px #FF9800;
+            }
+        }
+
+        .main-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background-color: #34495E;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #FF9800;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #e68a00;
+            transform: translateY(-2px);
+        }
+
+        .last-rate {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #ffffff;
+        }
+
+        .contact {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+        }
+
+        .tech-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .tech-box {
+            background-color: #2980B9;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-box img {
+            width: 100%;
+            border-radius: 10px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .tech-box h3 {
+            margin: 10px 0;
+            font-size: 1.2rem;
+            color: #FF9800;
+        }
+
+        .tech-box p {
+            font-size: 0.9rem;
+            color: #ffffff;
+        }
+
+        .tech-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .rating-section {
+            margin-top: 40px;
+        }
+
+        .feedback {
+            padding: 10px;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-bar">
+        <a href="index.html">Home</a>
+        <input type="text" class="search-box" placeholder="Search for innovative tech..." oninput="searchTech()">
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>Tech Innovations Inc.</h1>
+            <p>Your gateway to the future of technology.</p>
+        </div>
+        <img src="https://th.bing.com/th/id/R.f670eed6bc1c924a93936a6a6cb2d5bd?rik=qnRU7RaWWBYiGA&pid=ImgRaw&r=0"
+            alt="Tech Innovations" class="main-image">
+        <div class="section">
+            <h2>Explore Our Technologies</h2>
+            <div class="tech-boxes" id="tech-boxes">
+                <div class="tech-box">
+                    <img src="https://mydailydiscovery.com/wp-content/uploads/2021/01/iStock-1034901762.jpg" alt="AI Innovations">
+                    <h3>AI Innovations</h3>
+                    <p>Discover the latest advancements in artificial intelligence.</p>
+                </div>
+                <div class="tech-box">
+                    <img src="https://th.bing.com/th/id/OSK.HERO3GarxrSoiL0QCbwGrqV_gRaG6tEfzg5ha99cPEFQEMg?rs=1&pid=ImgDetMain" alt="Cloud Computing">
+                    <h3>Cloud Computing</h3>
+                    <p>Unlock the power of cloud solutions for your business.</p>
+                </div>
+                <div class="tech-box">
+                    <img src="https://th.bing.com/th/id/OIP.UbwXJHAfNsTejScTIKWyEwHaE8?rs=1&pid=ImgDetMain" alt="Blockchain Technology">
+                    <h3>Blockchain Technology</h3>
+                    <p>Explore the transformative potential of blockchain.</p>
+                </div>
+                <div class="tech-box">
+                    <img src="https://th.bing.com/th/id/OIP.bSnoedV6xPKvWu5bfDF3NQHaDu?rs=1&pid=ImgDetMain" alt="Cybersecurity">
+                    <h3>Cybersecurity</h3>
+                    <p>Protect your digital assets with top-notch security solutions.</p>
+                </div>
+                <div class="tech-box">
+                    <img src="https://th.bing.com/th/id/OSK.HERO0Ke_Xhh9uP6fmblY4FpKGx-z4mGE4e7exXfZUl2crKM?rs=1&pid=ImgDetMain" alt="IoT Devices">
+                    <h3>IoT Devices</h3>
+                    <p>Connect and automate your environment with IoT.</p>
+                </div>
+            </div>
+        </div>
+        <div class="rating-section">
+            <h2>Provide Feedback</h2>
+	    <input type="text" class="feedback"id="feedback" placeholder="Enter your feedback">
+	    <button id="send">Send Feedback</button>
+	    <div class="last-rate" id="last-rate">Last rate: N/A</div>
+        </div>
+        <div class="contact" id="contact">
+            <h2>Contact Us</h2>
+            <p>Email: contact@techinnovations.com</p>
+            <p>Phone: +1 234 567 890</p>
+        </div>
+    </div>
+    <script>
+        // Wait for the DOM to fully load
+        document.addEventListener('DOMContentLoaded', () => {
+            const feedbackInput = document.getElementById('feedback');
+            const sendButton = document.getElementById('send');
+            const lastRateDiv = document.getElementById('last-rate');
+
+            // Replace with your actual server address
+            const socket = new WebSocket('ws://192.168.0.107:8080/'); // Use your local IP address
+
+            socket.onopen = () => {
+                console.log('WebSocket connection established');
+            };
+
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                lastRateDiv.innerHTML = `Last rate: ${data.feedback}`; // Update the last rate display without encoding
+            };
+
+            socket.onerror = (error) => {
+                console.error('WebSocket Error:', error);
+            };
+
+            socket.onclose = () => {
+                console.log('WebSocket connection closed');
+            };
+
+            sendButton.addEventListener('click', () => {
+                const feedbackText = feedbackInput.value.trim(); // Get the feedback text
+
+                if (feedbackText) {
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify({ feedback: feedbackText })); // Send feedback
+                        feedbackInput.value = ''; // Clear input after sending
+                    } else {
+                        console.error('WebSocket is not open. Current state:', socket.readyState);
+                    }
+                } else {
+                    alert('Please enter feedback before sending.'); // Alert if no feedback is entered
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
