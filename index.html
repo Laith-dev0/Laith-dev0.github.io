@@ -292,8 +292,13 @@
 
     // Handle WebSocket messages
     socket.onmessage = (event) => {
-        const lastRate = event.data;
-        lastRateDiv.textContent = `Last rate: ${lastRate}`;
+        try {
+            const data = JSON.parse(event.data);
+            const feedback = data.feedback || 'N/A';
+            lastRateDiv.textContent = `Last rate: ${feedback}`;
+        } catch (e) {
+            console.error('Error parsing WebSocket message:', e);
+        }
     };
 
     // Search technology functionality
@@ -311,6 +316,7 @@
         });
     }
 </script>
+
 
 
 </body>
