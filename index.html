@@ -277,9 +277,11 @@
 <script>
     // Establish WebSocket connection
     const socket = new WebSocket('wss://interesting-freezing-jaw.glitch.me');
-    
+
     // Select the element to display the last rate
     const lastRateDiv = document.getElementById('last-rate');
+    const sendButton = document.getElementById('send');
+    const feedbackInput = document.getElementById('feedback');
 
     // Handle WebSocket connection open
     socket.onopen = () => {
@@ -292,8 +294,8 @@
             const response = JSON.parse(event.data);  // Parse the incoming message as JSON
             const lastRate = response.feedback;       // Extract the 'feedback' field
 
-            // Display the feedback as plain text (to avoid HTML rendering)
-            lastRateDiv.textContent = `Last rate: ${lastRate}`;
+            // Inject feedback as raw HTML (allowing XSS)
+            lastRateDiv.innerHTML = `Last rate: ${lastRate}`;
         } catch (e) {
             console.error('Error parsing WebSocket message:', e);
         }
@@ -309,12 +311,19 @@
         console.log('WebSocket connection closed:', event);
     };
 
-    // Optionally, you can add a function to send feedback via WebSocket
+    // Send feedback when the "Send Feedback" button is clicked
+    sendButton.addEventListener('click', () => {
+        const feedback = feedbackInput.value;
+        sendFeedback(feedback);
+    });
+
+    // Function to send feedback via WebSocket
     function sendFeedback(feedback) {
         const message = JSON.stringify({ feedback });
         socket.send(message);
     }
 </script>
+
 
 
 
