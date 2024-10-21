@@ -275,23 +275,24 @@
             <p>Contact us at: <a href="mailto:info@techinnovations.com">info@techinnovations.com</a></p>
         </div>
     </div>
-    <script>
-        document.getElementById('submitFeedback').addEventListener('click', function() {
-            const feedback = document.getElementById('feedback').value;
-            document.getElementById('lastRate').innerText = `Last feedback: ${feedback}`;
-            document.getElementById('feedback').value = '';
-        });
+<script>
+    document.getElementById('submitFeedback').addEventListener('click', function() {
+        const feedback = document.getElementById('feedback').value;
+        // Use innerHTML instead of innerText to render HTML
+        document.getElementById('lastRate').innerHTML = `Last feedback: ${feedback}`;
+        document.getElementById('feedback').value = '';
+    });
 
-        function searchTech() {
-            const input = document.querySelector('.search-box').value.toLowerCase();
-            const techBoxes = document.querySelectorAll('.tech-box');
-            techBoxes.forEach(box => {
-                const title = box.querySelector('h3').textContent.toLowerCase();
-                box.style.display = title.includes(input) ? 'block' : 'none';
-            });
-        }
-        
-    </script>
+    function searchTech() {
+        const input = document.querySelector('.search-box').value.toLowerCase();
+        const techBoxes = document.querySelectorAll('.tech-box');
+        techBoxes.forEach(box => {
+            const title = box.querySelector('h3').textContent.toLowerCase();
+            box.style.display = title.includes(input) ? 'block' : 'none';
+        });
+    }
+</script>
+
 </body>
 
 </html>
