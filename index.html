@@ -275,47 +275,47 @@
         </div>
     </div>
 <script>
-    const feedbackInput = document.getElementById('feedback');
+    // Establish WebSocket connection
+    const socket = new WebSocket('wss://interesting-freezing-jaw.glitch.me');
+    
+    // Select the element to display the last rate
     const lastRateDiv = document.getElementById('last-rate');
-    const sendButton = document.getElementById('send');
-    const socket = new WebSocket('wss://interesting-freezing-jaw.glitch.me'); // Updated WebSocket URL
 
-    // Send feedback on button click
-    sendButton.addEventListener('click', () => {
-        const feedback = feedbackInput.value;
-        if (feedback) {
-            const message = JSON.stringify({ feedback }); // Send as valid JSON
-            socket.send(message); // Send JSON feedback to server
-            feedbackInput.value = ''; // Clear input
-        }
-    });
+    // Handle WebSocket connection open
+    socket.onopen = () => {
+        console.log('WebSocket connection established.');
+    };
 
     // Handle WebSocket messages
     socket.onmessage = (event) => {
         try {
-            const data = JSON.parse(event.data);
-            const feedback = data.feedback || 'N/A';
-            lastRateDiv.textContent = `Last rate: ${feedback}`;
+            const response = JSON.parse(event.data);  // Parse the incoming message as JSON
+            const lastRate = response.feedback;       // Extract the 'feedback' field
+
+            // Display the feedback as plain text (to avoid HTML rendering)
+            lastRateDiv.textContent = `Last rate: ${lastRate}`;
         } catch (e) {
             console.error('Error parsing WebSocket message:', e);
         }
     };
 
-    // Search technology functionality
-    function searchTech() {
-        const query = document.querySelector('.search-box').value.toLowerCase();
-        const techBoxes = document.querySelectorAll('.tech-box');
+    // Handle WebSocket errors
+    socket.onerror = (error) => {
+        console.error('WebSocket error:', error);
+    };
 
-        techBoxes.forEach(box => {
-            const title = box.querySelector('h3').textContent.toLowerCase();
-            if (title.includes(query)) {
-                box.style.display = '';
-            } else {
-                box.style.display = 'none';
-            }
-        });
+    // Handle WebSocket connection close
+    socket.onclose = (event) => {
+        console.log('WebSocket connection closed:', event);
+    };
+
+    // Optionally, you can add a function to send feedback via WebSocket
+    function sendFeedback(feedback) {
+        const message = JSON.stringify({ feedback });
+        socket.send(message);
     }
 </script>
+
 
 
 
