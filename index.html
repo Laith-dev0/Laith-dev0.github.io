@@ -276,22 +276,58 @@
         </div>
     </div>
 <script>
-    document.getElementById('submitFeedback').addEventListener('click', function() {
+    // Create a WebSocket connection to the server
+    const ws = new WebSocket('wss://your_websocket_server_address'); // Replace with your WebSocket server address
+
+    // Handle the WebSocket connection open event
+    ws.onopen = function() {
+        console.log('WebSocket connection established.');
+    };
+
+    // Handle form submission for feedback
+    document.getElementById('feedbackForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission behavior
         const feedback = document.getElementById('feedback').value;
-        // Use innerHTML instead of innerText to render HTML
-        document.getElementById('lastRate').innerHTML = `Last feedback: ${feedback}`;
+
+        // Send feedback via WebSocket
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'feedback', data: feedback }));
+        } else {
+            console.error('WebSocket is not open.');
+        }
+
+        // Clear the input field after sending
         document.getElementById('feedback').value = '';
     });
 
+    // Handle incoming messages from the WebSocket server
+    ws.onmessage = function(event) {
+        const message = JSON.parse(event.data);
+
+        // Update the UI with the server's response
+        if (message.type === 'feedback_response') {
+            document.getElementById('lastRate').innerHTML = `Last feedback: ${message.data}`;
+        }
+    };
+
+    // Handle WebSocket errors
+    ws.onerror = function(error) {
+        console.error('WebSocket error:', error);
+    };
+
+    // Handle WebSocket connection close
+    ws.onclose = function() {
+        console.log('WebSocket connection closed.');
+    };
+
+    // Function to handle the search functionality
     function searchTech() {
         const input = document.querySelector('.search-box').value.toLowerCase();
         const techBoxes = document.querySelectorAll('.tech-box');
-        techBoxes.forEach(box => {
-            const title = box.querySelector('h3').textContent.toLowerCase();
-            box.style.display = title.includes(input) ? 'block' : 'none';
-        });
+        // Implement your search logic here
     }
 </script>
+
 
 </body>
 
