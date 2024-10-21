@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tech Innovations Inc.</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Add this line -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -264,70 +265,31 @@
         </div>
         <div class="rating-section">
             <h2>Provide Feedback</h2>
-	    <input type="text" class="feedback"id="feedback" placeholder="Enter your feedback">
-	    <button id="send">Send Feedback</button>
-	    <div class="last-rate" id="last-rate">Last rate: N/A</div>
+            <input type="text" class="feedback" id="feedback" placeholder="Enter your feedback">
+            <button id="submitFeedback">Submit</button>
+            <div class="last-rate" id="lastRate"></div>
         </div>
-        <div class="contact" id="contact">
-            <h2>Contact Us</h2>
-            <p>Email: contact@techinnovations.com</p>
-            <p>Phone: +1 234 567 890</p>
+        <div class="contact">
+            <p>Contact us at: <a href="mailto:info@techinnovations.com">info@techinnovations.com</a></p>
         </div>
     </div>
-<script>
-    // Establish WebSocket connection
-    const socket = new WebSocket('wss://interesting-freezing-jaw.glitch.me');
+    <script>
+        document.getElementById('submitFeedback').addEventListener('click', function() {
+            const feedback = document.getElementById('feedback').value;
+            document.getElementById('lastRate').innerText = `Last feedback: ${feedback}`;
+            document.getElementById('feedback').value = '';
+        });
 
-    // Select the element to display the last rate
-    const lastRateDiv = document.getElementById('last-rate');
-    const sendButton = document.getElementById('send');
-    const feedbackInput = document.getElementById('feedback');
-
-    // Handle WebSocket connection open
-    socket.onopen = () => {
-        console.log('WebSocket connection established.');
-    };
-
-    // Handle WebSocket messages
-    socket.onmessage = (event) => {
-        try {
-            const response = JSON.parse(event.data);  // Parse the incoming message as JSON
-            const lastRate = response.feedback;       // Extract the 'feedback' field
-
-            // Inject feedback as raw HTML (allowing XSS)
-            lastRateDiv.innerHTML = `Last rate: ${lastRate}`;
-        } catch (e) {
-            console.error('Error parsing WebSocket message:', e);
+        function searchTech() {
+            const input = document.querySelector('.search-box').value.toLowerCase();
+            const techBoxes = document.querySelectorAll('.tech-box');
+            techBoxes.forEach(box => {
+                const title = box.querySelector('h3').textContent.toLowerCase();
+                box.style.display = title.includes(input) ? 'block' : 'none';
+            });
         }
-    };
-
-    // Handle WebSocket errors
-    socket.onerror = (error) => {
-        console.error('WebSocket error:', error);
-    };
-
-    // Handle WebSocket connection close
-    socket.onclose = (event) => {
-        console.log('WebSocket connection closed:', event);
-    };
-
-    // Send feedback when the "Send Feedback" button is clicked
-    sendButton.addEventListener('click', () => {
-        const feedback = feedbackInput.value;
-        sendFeedback(feedback);
-    });
-
-    // Function to send feedback via WebSocket
-    function sendFeedback(feedback) {
-        const message = JSON.stringify({ feedback });
-        socket.send(message);
-    }
-</script>
-
-
-
-
-
+        getLastFeedback();
+    </script>
 </body>
 
 </html>
