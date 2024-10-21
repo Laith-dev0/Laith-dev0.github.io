@@ -276,72 +276,75 @@
         </div>
     </div>
 <script>
-    // Establish WebSocket connection to the specified server
     let ws;
 
+    // Connect to the WebSocket server
     function connectWebSocket() {
-        console.log("Attempting to establish WebSocket connection...");
-        ws = new WebSocket('wss://interesting-freezing-jaw.glitch.me');
+        ws = new WebSocket('wss://interesting-freezing-jaw.glitch.me'); // Your WebSocket URL
 
-        // Handle WebSocket open event
+        // When the connection opens
         ws.onopen = function() {
-            console.log('WebSocket connection established.');
+            console.log('WebSocket connection opened');
         };
 
-        // Handle messages received from the server
+        // When a message is received
         ws.onmessage = function(event) {
-            console.log('Message received from server:', event.data);
             try {
-                const message = JSON.parse(event.data);
-
-                // Check message type and update UI with feedback response
-                if (message.type === 'feedback_response') {
-                    console.log('Feedback response received:', message.data);
-                    document.getElementById('lastRate').innerHTML = `Last feedback: ${message.data}`;
+                const data = JSON.parse(event.data);
+                if (data.feedback) {
+                    document.getElementById('lastRate').innerHTML = `Last feedback: ${data.feedback}`;
                 }
-            } catch (error) {
-                console.error('Error parsing WebSocket message:', error);
+            } catch (e) {
+                console.error('Error parsing WebSocket message:', e);
             }
         };
 
-        // Handle WebSocket errors
-        ws.onerror = function(error) {
-            console.error('WebSocket error occurred:', error);
+        // Handle connection close
+        ws.onclose = function() {
+            console.log('WebSocket connection closed. Reconnecting...');
+            setTimeout(connectWebSocket, 3000); // Attempt to reconnect in 3 seconds
         };
 
-        // Handle WebSocket closure and attempt to reconnect
-        ws.onclose = function() {
-            console.warn('WebSocket connection closed. Retrying...');
-            setTimeout(connectWebSocket, 3000); // Retry connection after 3 seconds
+        // Handle connection error
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
         };
     }
 
-    // Start the WebSocket connection when the script loads
-    connectWebSocket();
+    // Initialize WebSocket connection on page load
+    window.onload = function() {
+        connectWebSocket();
+    };
 
-    // Handle form submission for feedback
+    // Handle feedback form submission
     document.getElementById('feedbackForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission behavior
+        event.preventDefault(); // Prevent default form submission
         const feedback = document.getElementById('feedback').value;
 
-        // Ensure WebSocket connection is open before sending feedback
         if (ws.readyState === WebSocket.OPEN) {
-            console.log('Sending feedback via WebSocket:', feedback);
-            const message = { type: 'feedback', data: feedback };
-            ws.send(JSON.stringify(message));
-            document.getElementById('feedback').value = ''; // Clear input field after submission
+            console.log('Sending feedback:', feedback);
+            ws.send(JSON.stringify({ feedback: feedback })); // Send feedback in JSON format
+            document.getElementById('feedback').value = ''; // Clear the input field
         } else {
             console.error('WebSocket is not open. Cannot send feedback.');
         }
     });
 
-    // Search function (unchanged from previous script)
+    // Search functionality for tech items
     function searchTech() {
         const input = document.querySelector('.search-box').value.toLowerCase();
         const techBoxes = document.querySelectorAll('.tech-box');
-        // Implement your search logic here
+        techBoxes.forEach((box) => {
+            const title = box.querySelector('.tech-title').textContent.toLowerCase();
+            if (title.includes(input)) {
+                box.style.display = 'block'; // Show box if it matches the search
+            } else {
+                box.style.display = 'none'; // Hide box if it doesn't match
+            }
+        });
     }
 </script>
+
 
 
 
