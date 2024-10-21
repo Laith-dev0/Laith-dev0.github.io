@@ -276,57 +276,73 @@
         </div>
     </div>
 <script>
-    // Create a WebSocket connection to the server
-    const ws = new WebSocket('wss://interesting-freezing-jaw.glitch.me'); // Replace with your WebSocket server address
+    // Establish WebSocket connection to the specified server
+    let ws;
 
-    // Handle the WebSocket connection open event
-    ws.onopen = function() {
-        console.log('WebSocket connection established.');
-    };
+    function connectWebSocket() {
+        console.log("Attempting to establish WebSocket connection...");
+        ws = new WebSocket('wss://interesting-freezing-jaw.glitch.me');
+
+        // Handle WebSocket open event
+        ws.onopen = function() {
+            console.log('WebSocket connection established.');
+        };
+
+        // Handle messages received from the server
+        ws.onmessage = function(event) {
+            console.log('Message received from server:', event.data);
+            try {
+                const message = JSON.parse(event.data);
+
+                // Check message type and update UI with feedback response
+                if (message.type === 'feedback_response') {
+                    console.log('Feedback response received:', message.data);
+                    document.getElementById('lastRate').innerHTML = `Last feedback: ${message.data}`;
+                }
+            } catch (error) {
+                console.error('Error parsing WebSocket message:', error);
+            }
+        };
+
+        // Handle WebSocket errors
+        ws.onerror = function(error) {
+            console.error('WebSocket error occurred:', error);
+        };
+
+        // Handle WebSocket closure and attempt to reconnect
+        ws.onclose = function() {
+            console.warn('WebSocket connection closed. Retrying...');
+            setTimeout(connectWebSocket, 3000); // Retry connection after 3 seconds
+        };
+    }
+
+    // Start the WebSocket connection when the script loads
+    connectWebSocket();
 
     // Handle form submission for feedback
     document.getElementById('feedbackForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission behavior
         const feedback = document.getElementById('feedback').value;
 
-        // Send feedback via WebSocket
+        // Ensure WebSocket connection is open before sending feedback
         if (ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({ type: 'feedback', data: feedback }));
+            console.log('Sending feedback via WebSocket:', feedback);
+            const message = { type: 'feedback', data: feedback };
+            ws.send(JSON.stringify(message));
+            document.getElementById('feedback').value = ''; // Clear input field after submission
         } else {
-            console.error('WebSocket is not open.');
+            console.error('WebSocket is not open. Cannot send feedback.');
         }
-
-        // Clear the input field after sending
-        document.getElementById('feedback').value = '';
     });
 
-    // Handle incoming messages from the WebSocket server
-    ws.onmessage = function(event) {
-        const message = JSON.parse(event.data);
-
-        // Update the UI with the server's response
-        if (message.type === 'feedback_response') {
-            document.getElementById('lastRate').innerHTML = `Last feedback: ${message.data}`;
-        }
-    };
-
-    // Handle WebSocket errors
-    ws.onerror = function(error) {
-        console.error('WebSocket error:', error);
-    };
-
-    // Handle WebSocket connection close
-    ws.onclose = function() {
-        console.log('WebSocket connection closed.');
-    };
-
-    // Function to handle the search functionality
+    // Search function (unchanged from previous script)
     function searchTech() {
         const input = document.querySelector('.search-box').value.toLowerCase();
         const techBoxes = document.querySelectorAll('.tech-box');
         // Implement your search logic here
     }
 </script>
+
 
 
 </body>
